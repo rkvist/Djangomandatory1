@@ -1,0 +1,38 @@
+{% extends './_base.html' %}
+
+{% block content %}
+
+    <div class="m-2">
+        <h1><b>Expired Check outs <i class="text-danger fa fa-exclamation-triangle"></i></b></h1>
+        <p>{{ date.date }}</p>
+
+        {% if expired_materials %}
+            <table class="table mt-3">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th scope="col">User</th>
+                        <th scope="col">Should have returned on date</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Time expired</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for expired_material in expired_materials %}
+                    <tr>
+                        <td>{{ expired_material.user }}</td>
+                        <td>{{ expired_material.loan_return_datetime.date }}</td>
+                        <td>{{ expired_material.book_id.material_id.title }}</td>
+                        <td>{{ expired_material.date_diff }} days</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>There is no expired check outs</p>
+        {% endif %}
+    </div>
+
+
+    
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends './_base.html' %}
+
+{% block content %}
+
+    <div>
+        <h1>Home</h1>
+        <h4>{{ response }}</h4>
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
+        <div>
+            <a href="{% url 'home:home' %}">All</a>
+            <a href="{% url 'home:books' %}">Books</a>
+            <a href="{% url 'home:magazines' %}">Magazines</a>
+        </div>
+
+        {% if materials %}
+            <table>
+                <thead>
+                    <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Year</th>
+                    <th scope="col">Language</th>
+                    <th scope="col">Pages</th>
+                    <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for material in materials %}
+                        {% if material.is_loaned %}
+                            <tr class="disabled-tr" disabled>
+                        {% else %}
+                            <tr>
+                        {% endif %}
+                            {% if material.material_id.material_type == 'book' %}
+                                {% if book_count == 10 %}
+                                    <td><i class="fa fa-book text-white"></i></td>
+                                {% else %}
+                                    <td><i class="fa fa-book text-info"></i></td>
+                                {% endif %}
+                            {% else %}
+                                {% if magazine_count == 3 %}
+                                    <td><i class="fa fa-sticky-note text-white"></<i></td>
+                                {% else %}
+                                    <td><i class="fa fa-sticky-note text-info"></<i></td>
+                                {% endif %}
+                            {% endif %}
+                            <td>{{ material.material_id.title }}</td>
+                            <td>{{ material.material_id.author }}</td>
+                            <td>{{ material.material_id.year }}</td>
+                            <td>{{ material.material_id.language }}</td>
+                            <td>{{ material.material_id.pages }}</td>
+                            <form action="{% url 'check_out' %}" method="POST">
+                            {% csrf_token %}
+                                <input type="hidden" value="{{ material.material_id.id }}" name="material_data" />
+                                <input type="hidden" value="{{ material.id }}" name="material_id" />
+                                <td><button><i class="fa fa-plus"></i> Check out</button></td>
+                            </form>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>There is no {{ type }} available.</p>
+        {% endif %}
+    </div>
+    
+{% endblock %}

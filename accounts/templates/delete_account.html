@@ -1,0 +1,33 @@
+{% extends './_base.html' %}
+
+{% block content %}
+
+    <div>
+
+        <h1>Delete account</h1>
+
+        <a href="{% url 'home:home' %}">Home</a>
+
+        <p>Are you sure you want to delete <i>{{ user }}</i>?</p>
+        <p>Confirm by typing your password and '<b>delete</b>'</p>
+        <form action="{% url 'delete_account' %}" method="POST">
+            {% csrf_token %}
+            <div>
+                <label for="delete-password">Password</label>
+                <input type="password" name="delete-password" id="delete-password" />
+            </div>
+            <div>
+                <label for="delete-confirm">Type 'delete'</label>
+                <input type="text" name="delete-confirm" id="delete-confirm" />
+            </div>
+            <br />
+            <button>Delete user</button>
+        </form>
+
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
+
+    </div>
+
+{% endblock %}

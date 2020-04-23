@@ -1,0 +1,28 @@
+{% extends './_base.html' %}
+
+{% block content %}
+
+    <div>
+        <h1>Publish book</h1>
+
+    <form action="{% url 'publish_material' %}" method="POST">
+        {% csrf_token %}
+        <div>
+            <label for="material_language">Choose a book</label>
+            <select name='material_entry'>
+                {% for material in materials %}
+                    <option value='{{ material.pk }}'>{{ material.title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+    <button>Add book</button>
+    </form>
+
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+
+    </div>
+
+{% endblock %}

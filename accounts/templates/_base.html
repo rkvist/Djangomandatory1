@@ -1,0 +1,75 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Django</title>
+</head>
+<body>
+
+    {% if user.is_authenticated %}
+        {% if user.is_staff %}
+            <nav>
+            <a href="{% url 'home:home' %}">Welcome {{ user }}!</a>
+            <br/>
+             <a href="{% url 'publish_material' %}"><button type="button">Publish book</button></a>
+            <a href="{% url 'register_material' %}"><button type="button">Add Book</button></a>
+            <div>
+                <ul>
+                <li>
+                    <a href="{% url 'home:home' %}">Home</a>
+                </li>
+                <li>
+                    <a href="{% url 'home:my_checkouts' %}">My check outs</a>
+                </li>
+                <li>
+                    <a href="{% url 'home:expired_checkouts' %}">Expired check outs</a>
+                </li>
+                </ul>
+            </div>
+            </nav>
+        {% else %}
+            <nav>
+            <a href="{% url 'home:home' %}">Hi, {{ user }}!</a>
+            <button type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbarNav">
+                <ul>
+                <li>
+                    <a href="{% url 'home:home' %}">Home</a>
+                </li>
+                <li>
+                    <a href="{% url 'home:my_checkouts' %}">Checked out</a>
+                </li>
+                </ul>
+            </div>
+            </nav>
+        {% endif %}
+    {% endif %}
+
+    {% block content %}
+
+
+
+    {% endblock %}
+
+    {% if user.is_authenticated %}
+        <div>
+            <div>
+                <a href="{% url 'logout' %}"><button>LOG OUT</button></a>
+            </div>
+            <div>
+                <a href="{% url 'change_password' %}">Change password</a>
+            </div>
+            <div>
+                <a href="{% url 'delete_account' %}">Delete account</a>
+            </div>
+        </div>
+    {% endif %}
+
+    <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

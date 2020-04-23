@@ -1,0 +1,41 @@
+{% extends './_base.html' %}
+
+{% block content %}
+
+    <div>
+        <h1><b>My check outs</b></h1>
+        <h4>Books: {{ book_count }}</h4>
+        <h4>Magazines: {{ magazine_count }}</h4>
+        {% if user_loans %}
+            <table>
+                <thead>
+                    <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Loaned on</th>
+                    <th scope="col">Return no later than</th>
+                    <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user_loan in user_loans %}
+                        <tr>
+                            <td scope="row">{{ user_loan.book_id }}</td>
+                            <td>{{ user_loan.book_id.material_id.author }}</td>
+                            <td>{{ user_loan.checked_out_datetime }}</td>
+                            <td><b>{{ user_loan.checked_in_datetime }}</b></td>
+                            <form action="{% url 'check_in' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{ user_loan.id }}" name="loan_id">
+                            <td><button>Return</button></td>
+                            </form>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>You have no loans at the moment.</p>
+        {% endif %}
+    </div>
+    
+{% endblock %}
